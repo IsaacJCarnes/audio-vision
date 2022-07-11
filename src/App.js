@@ -1,23 +1,20 @@
-import './App.css';
+import "./App.css";
 
-import {
-  Routes,
-  Route
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
+
+import Header from "./components/Header.js";
 
 function App() {
   const basePath = "/audio-vision/";
   return (
     <div className="App">
-      <header>
-        <h1>Audio Vision</h1>
-      </header>
-      <div className='Content'>
-      <Routes>
+      <Header />
+      <div id="Content">
+        <Routes>
           <Route exact path={basePath} element={<HomePage />} />
-      </Routes>
+        </Routes>
       </div>
     </div>
   );

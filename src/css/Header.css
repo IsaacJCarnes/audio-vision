@@ -1,0 +1,25 @@
+#Header{
+    position: relative;
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#Header::after{
+    content:"";
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+    height:1px;
+    width: 80%;
+    border-bottom: 1px solid lightslategray;
+}
+
+#Title{
+    margin-left: 5vw;
+}
+
+.textContent{
+    color: #33CC33;
+}
