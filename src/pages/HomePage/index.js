@@ -1,6 +1,7 @@
 import "./HomePage.css";
 
 import { useState } from "react";
+import { Col, Row, Grid } from 'react-flexbox-grid';
 
 import { tone as toneArray } from "./helper.js";
 
@@ -37,7 +38,7 @@ export default function HomePage() {
     gainNode.gain.value = volume * 0.01;
   });*/
 
-  const playNote = (e) => {
+  const playNote = (e, noteFreq = frequency) => {
     e.preventDefault();
     if(firstTime){
         setFirstTime(false);
@@ -47,13 +48,14 @@ export default function HomePage() {
     oscillator = audioContext.createOscillator();
     oscillator.connect(audioContext.destination);
     oscillator.type = wave;
-    oscillator.frequency.value = frequency; // value in hertz
+    oscillator.frequency.value = noteFreq; // value in hertz
 
     oscillator.start();
+    //gainNode.gain.setTargetAtTime(0, audioContext.currentTime, audioContext.currentTime + noteTime - 0.03);
     oscillator.stop(audioContext.currentTime + noteTime);
   }
 
-  const FrequencyOptions = () => {
+  /*const FrequencyOptions = () => {
     let noteLetters = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
     let frequencies = [];
     for(let i = 0; i < toneArray['C'].length; i++){ //toneArray 'C' is equal for the max sublength of an array
@@ -64,6 +66,22 @@ export default function HomePage() {
         }
     }
     return frequencies;
+  }*/
+
+  const FrequencyOptions = () => {
+    let noteLetters = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    return(
+        <Grid onClick={(e) => {if(e.target.type === "submit"){
+            playNote(e, e.target.value);
+            setFrequency(e.target.value);
+        }}}>
+            {noteLetters.map((note, indexI) => (
+                <Row key={"row"+indexI}>
+                    {toneArray[note].map((noteValue, indexJ) => (<Col sm={9} md={1} key={"row"+indexI+"col"+indexJ}><button className="textContent" value={noteValue}>{noteLetters[indexI]}<span>{indexJ}</span></button></Col>))}
+                </Row>
+            ))}
+        </Grid>
+    )
   }
 
 
@@ -77,10 +95,15 @@ export default function HomePage() {
         <option value="square">square</option>
         <option value="sawtooth">sawtooth</option>
       </select>
-      <select id="freqSelect" className="textContent" defaultValue={frequency} onChange={(e) => setFrequency(e.target.value)}>
-            {FrequencyOptions()}
-      </select>
+      {FrequencyOptions()}
+
+     
       <input id="volume" type="range" min="0" max="10" value={volume} onChange={(e) => setVolume(e.target.value)}/>
     </div>
   );
 }
+/*
+ <select id="freqSelect" className="textContent" defaultValue={frequency} onChange={(e) => setFrequency(e.target.value)}>
+            {FrequencyOptions()}
+      </select>
+*/

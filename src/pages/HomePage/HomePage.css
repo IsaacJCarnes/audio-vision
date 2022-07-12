@@ -1,3 +1,15 @@
+#NoteGrid{
+    width:85vw;
+}
+
+#NoteGrid > button{
+    width: 8.3vw;
+}
+
+span{
+    font-size: smaller;
+}
+
 .textContent{
     color: #33CC33;
 }
