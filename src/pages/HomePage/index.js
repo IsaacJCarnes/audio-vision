@@ -1,4 +1,5 @@
 import "./HomePage.css";
+import Audio from './Audio.js';
 
 import { useState } from "react";
 import { Col, Row, Grid } from 'react-flexbox-grid';
@@ -10,74 +11,41 @@ export default function HomePage() {
   const [wave, setWave] = useState("sine");
   const [volume, setVolume] = useState(0);
   const [frequency, setFrequency] = useState(440);
+  const [oscillatorNodes, setOscillatorNodes] = useState([]);
   const noteTime = .25;
-
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
   var oscillator;
 
-  const gainNode = audioContext.createGain();
-  gainNode.gain.value = volume * 0.01;
-
-  gainNode.connect(audioContext.destination);
-
-
-  /*document.addEventListener("click", () => audioContext.resume(), {
-    once: true,
-  });
-
-  document.querySelector("#wave").addEventListener("change", (e) => {
-    oscillator.type = e.target.value;
-  });
-
-  document.querySelector("#frequency").addEventListener("input", (e) => {
-    oscillator.frequency.value = e.target.value;
-  });
-
-  document.querySelector("#volume").addEventListener("input", (e) => {
-    gainNode.gain.value = volume * 0.01;
-  });*/
 
   const playNote = (e, noteFreq = frequency) => {
     e.preventDefault();
     if(firstTime){
         setFirstTime(false);
-        audioContext.resume();
+        Audio.masterGainNode.connect(Audio.context.destination);
+        Audio.masterGainNode.gain.linearRampToValueAtTime(0, Audio.context.currentTime);
+        Audio.context.resume();
     }
 
-    oscillator = audioContext.createOscillator();
-    oscillator.connect(audioContext.destination);
+    oscillator = Audio.context.createOscillator();
+    oscillator.connect(Audio.context.destination);
     oscillator.type = wave;
-    oscillator.frequency.value = noteFreq; // value in hertz
+    oscillator.frequency.value = Math.round(noteFreq*10)/10; // value in hertz
 
     oscillator.start();
-    //gainNode.gain.setTargetAtTime(0, audioContext.currentTime, audioContext.currentTime + noteTime - 0.03);
-    oscillator.stop(audioContext.currentTime + noteTime);
+    Audio.masterGainNode.gain.exponentialRampToValueAtTime(0.01, Audio.context.currentTime + noteTime - 0.03);
+    oscillator.stop(Audio.context.currentTime + noteTime);
   }
-
-  /*const FrequencyOptions = () => {
-    let noteLetters = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-    let frequencies = [];
-    for(let i = 0; i < toneArray['C'].length; i++){ //toneArray 'C' is equal for the max sublength of an array
-        for(let j = 0; j < noteLetters.length; j++){
-            if(i < toneArray[noteLetters[j]].length){
-                frequencies.push(<option className="" key={noteLetters[j]+i} value={toneArray[noteLetters[j]][i]}>{noteLetters[j]+i}</option>);
-            }
-        }
-    }
-    return frequencies;
-  }*/
 
   const FrequencyOptions = () => {
     let noteLetters = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
     return(
-        <Grid onClick={(e) => {if(e.target.type === "submit"){
+        <Grid onClick={(e) => {if(e.target.type === "submit" || e.target.nodeName === "SPAN"){
             playNote(e, e.target.value);
             setFrequency(e.target.value);
         }}}>
             {noteLetters.map((note, indexI) => (
                 <Row key={"row"+indexI}>
-                    {toneArray[note].map((noteValue, indexJ) => (<Col sm={9} md={1} key={"row"+indexI+"col"+indexJ}><button className="textContent" value={noteValue}>{noteLetters[indexI]}<span>{indexJ}</span></button></Col>))}
+                    {toneArray[note].map((noteValue, indexJ) => (<Col sm={9} md={1} key={"row"+indexI+"col"+indexJ}><button className="textContent" value={noteValue}>{noteLetters[indexI]}<span value={noteValue}>{indexJ}</span></button></Col>))}
                 </Row>
             ))}
         </Grid>
@@ -102,8 +70,3 @@ export default function HomePage() {
     </div>
   );
 }
-/*
- <select id="freqSelect" className="textContent" defaultValue={frequency} onChange={(e) => setFrequency(e.target.value)}>
-            {FrequencyOptions()}
-      </select>
-*/

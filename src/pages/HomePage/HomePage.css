@@ -1,3 +1,9 @@
+.row{
+    display: flex;
+    justify-content: center;
+    width: 75vw;
+}
+
 #NoteGrid{
     width:85vw;
 }
@@ -6,10 +12,32 @@
     width: 8.3vw;
 }
 
+#NoteContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 span{
+    width: min-content;
     font-size: smaller;
+}
+
+.param{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .textContent{
     color: #33CC33;
+}
+
+.textSelected{
+    color:black;
+    background-color: #33CC33;
+}
+.textSelected > span{
+    color:black;
+    background-color: #33CC33;
 }
