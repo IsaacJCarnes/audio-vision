@@ -1,4 +1,5 @@
 import React from "react";
+import Osc from "./Osc";
 
 let context = new AudioContext();
 let destination = context.destination;
@@ -15,24 +16,50 @@ const CTX = React.createContext();
 export { CTX };
 
 let firstTime = true;
+let isPlaying = false;
 const noteTime = 1; // seconds to milliseconds
 
+let nodes = [];
+
 export function reducer(state, action) {
-    let { id, value } = action.payload || {};
+  let { id, value, innerText } = action.payload || {};
 
   switch (action.type) {
-    case "START_OSC":
-        if(firstTime){
-            osc1.start();
-            firstTime = false;
+    case "MAKE_OSC":
+      const newOsc = new Osc(context, state.osc1Settings.type, value, 0, null, gain1);
+      nodes.push(newOsc);
+      console.log("make osc, note and freq ", innerText, value, id);
+      osc1[id].value = value;
+      return { ...state, osc1Settings: { ...state.osc1Settings, [id]: value } };
+    case "KILL_OSC":
+      let newNodes = [];
+      nodes.forEach((node) => {
+        if (Math.round(node.osc.frequency.value) === Math.round(value)) {
+          node.stop();
         } else {
-            gain1.gain.exponentialRampToValueAtTime(.8, context.currentTime);
+          newNodes.push(node);
         }
+      });
+      nodes = newNodes;
+      console.log("kill osc, note and freq ", innerText, value);
+      return { ...state, osc1Settings: { ...state.osc1Settings, [id]: value } };
+    case "START_OSC":
+      if (firstTime) {
+        osc1.start();
+        firstTime = false;
+      } else {
+        gain1.gain.exponentialRampToValueAtTime(0.8, context.currentTime);
+      }
+      isPlaying = true;
       return { ...state };
     case "STOP_OSC":
-        gain1.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + noteTime - 0.04);
-        //osc1.stop(context.currentTime + noteTime);
-        return { ...state };
+      gain1.gain.exponentialRampToValueAtTime(
+        0.0001,
+        context.currentTime + noteTime - 0.04
+      );
+      isPlaying = false;
+      //osc1.stop(context.currentTime + noteTime);
+      return { ...state };
     case "CHANGE_OSC1":
       if (id === "type") {
         osc1.type = value;
@@ -46,7 +73,10 @@ export function reducer(state, action) {
       } else {
         filter[id].value = value;
       }
-      return { ...state, filterSettings: { ...state.filterSettings, [id]: value } };
+      return {
+        ...state,
+        filterSettings: { ...state.filterSettings, [id]: value },
+      };
     default:
       console.log("reducer error. action: ", action);
       return { ...state };

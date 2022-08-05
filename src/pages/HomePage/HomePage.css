@@ -8,8 +8,19 @@
     width:85vw;
 }
 
-#NoteGrid > button{
+.GridBtn{
+    user-select: none;
     width: 8.3vw;
+}
+.GridBtn::selection{
+    user-select: none;
+    color: #000;
+    background: transparent;
+}
+.GridBtn::-moz-selection {
+    user-select: none;
+    color: #000;
+    background: transparent;
 }
 
 #NoteContainer{
