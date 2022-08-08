@@ -8,6 +8,8 @@ import { tone as toneArray } from "../pages/HomePage/helper.js";
 export default function NoteKeyboard() {
   const [appState, updateState] = useContext(CTX);
   let { frequency } = appState.osc1Settings;
+  let minimumFreq = 261; //C5
+  let maximumFreq = 494; //B5
 
   const change = (e) => {
     if (e.type === "click") {
@@ -58,7 +60,7 @@ export default function NoteKeyboard() {
       >
         {noteLetters.map((note, indexI) => (
           <Row key={"row" + indexI}>
-            {toneArray[note].map((noteValue, indexJ) => (
+            {toneArray[note].filter(freq => minimumFreq <= freq && freq <= maximumFreq).map((noteValue, indexJ) => (
               <Col key={"row" + indexI + "col" + indexJ}>
                 <button
                   id="frequency"
