@@ -3,7 +3,7 @@ import { CTX } from "../context/Store";
 
 import { Col, Row, Grid } from "react-flexbox-grid";
 
-import { tone as toneArray } from "../pages/HomePage/helper.js";
+import { tone as toneArray, ToneAsList } from "../pages/HomePage/helper.js";
 
 export default function NoteKeyboard() {
   const [appState, updateState] = useContext(CTX);
@@ -46,6 +46,7 @@ export default function NoteKeyboard() {
       "Bb",
       "B",
     ];
+    let list = ToneAsList();
 
     return (
       <Grid
