@@ -158,8 +158,10 @@ export default function NoteKeyboard() {
       }}
     >
       <h3 id="KeyboardTitle">Keyboard</h3>
-      {RangeSlider(true)}
-      {RangeSlider(false)}
+      <div className="sliderHolder">
+        {RangeSlider(true)}
+        {RangeSlider(false)}
+      </div>
       {FrequencyOptions()}
     </div>
   );

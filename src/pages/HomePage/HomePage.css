@@ -5,16 +5,24 @@
 }
 
 #NoteGrid{
+    display: flex;
     width:85vw;
+    flex-direction: column;
+    align-items: center;
 }
 
 #KeyboardTitle{
     display:inherit;
 }
 
+.sliderHolder{
+    display: flex;
+    margin: 0.5vh 0vw;
+}
+
 .rangeDetails{
-    margin: 0.5vh 1vw 1vh 0vw;
-    display: inline;
+    margin: 0.5vh 1vw 0vh 0vw;
+    display: flex;
     height:2vh;
 }
 
@@ -42,6 +50,10 @@
     width:13vw;
     border: 2px black solid;
     z-index: 1;
+}
+
+.rangeDetails[open]{
+    margin-bottom: 2.2vh;
 }
 
 .rangeSlider {
