@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CTX } from "../context/Store";
 
 import { Col, Row, Grid } from "react-flexbox-grid";
@@ -7,9 +7,11 @@ import { tone as toneArray, ToneAsList } from "../pages/HomePage/helper.js";
 
 export default function NoteKeyboard() {
   const [appState, updateState] = useContext(CTX);
+  const [noteList, setNoteList] = useState([]);
+  const [minNote, setMinNote] = useState(0);
+  const [maxNote, setMaxNote] = useState(99);
+
   let { frequency } = appState.osc1Settings;
-  let minimumFreq = 261; //C5
-  let maximumFreq = 494; //B5
 
   const change = (e) => {
     if (e.type === "click") {
@@ -32,24 +34,8 @@ export default function NoteKeyboard() {
   };
 
   const FrequencyOptions = () => {
-    let noteLetters = [
-      "C",
-      "Db",
-      "D",
-      "Eb",
-      "E",
-      "F",
-      "Gb",
-      "G",
-      "Ab",
-      "A",
-      "Bb",
-      "B",
-    ];
-    let list = ToneAsList();
-
     return (
-      <Grid
+      <div
         id="NoteContainer"
 
         //Disabled for now
@@ -59,47 +45,102 @@ export default function NoteKeyboard() {
           }
         }}*/
       >
-        {noteLetters.map((note, indexI) => (
-          <Row key={"row" + indexI}>
-            {toneArray[note].filter(freq => minimumFreq <= freq && freq <= maximumFreq).map((noteValue, indexJ) => (
-              <Col key={"row" + indexI + "col" + indexJ}>
-                <button
-                  id="frequency"
-                  onMouseUp={(e) => {
-                    change(e);
-                  }}
-                  onMouseDown={(e) => {
-                    change(e);
-                  }}
-                  onMouseLeave={(e) => {
-                    change(e);
-                  }}
-                  onTouchStart={(e) => {
-                    change(e);
-                  }}
-                  onTouchEnd={(e) => {
-                    change(e);
-                  }}
-
-                  className={
-                    Math.floor(frequency) === Math.floor(noteValue)
-                      ? "gridBtn textSelected"
-                      : "gridBtn textContent"
-                  }
-                  value={noteValue}
-                >
-                  {noteLetters[indexI]}
-                  <span id="frequency" value={noteValue}>
-                    {indexJ}
-                  </span>
-                </button>
-              </Col>
-            ))}
-          </Row>
-        ))}
-      </Grid>
+        {noteList
+          .filter((note, indexI) => minNote <= indexI && indexI <= maxNote)
+          .map((note, indexJ) => (
+            <button
+              id="frequency"
+              key={"note" + indexJ}
+              onMouseUp={(e) => {
+                change(e);
+              }}
+              onMouseDown={(e) => {
+                change(e);
+              }}
+              onMouseLeave={(e) => {
+                change(e);
+              }}
+              onTouchStart={(e) => {
+                change(e);
+              }}
+              onTouchEnd={(e) => {
+                change(e);
+              }}
+              className={
+                Math.floor(frequency) === Math.floor(note.noteFreq)
+                  ? "gridBtn textSelected"
+                  : "gridBtn textContent"
+              }
+              value={note.noteFreq}
+            >
+              {note.noteId}
+            </button>
+          ))}
+      </div>
     );
   };
+
+  const RangeSlider = (isMin) => {
+    if (isMin) {
+      if(noteList.length < 1){
+        return(<details className="rangeDetails">
+          <summary>Min: </summary>
+          <input
+            type="range"
+            min="0"
+            max="98"
+            value={minNote}
+            className="rangeSlider"
+            onChange={(e) => setMinNote(e.target.value)}
+          />
+        </details>);
+      }
+      return (
+        <details className="rangeDetails">
+          <summary>Min: {noteList[minNote].noteId}</summary>
+          <input
+            type="range"
+            min="0"
+            max="98"
+            value={minNote}
+            className="rangeSlider"
+            onChange={(e) => setMinNote(e.target.value)}
+          />
+        </details>
+      );
+    } else {
+      if(noteList.length < 1){
+        return(<details className="rangeDetails">
+          <summary>Max: </summary>
+          <input
+            type="range"
+            min="1"
+            max="99"
+            value={maxNote}
+            className="rangeSlider"
+            onChange={(e) => setMaxNote(e.target.value)}
+          />
+        </details>);
+      }
+      return (
+        <details className="rangeDetails">
+          <summary>Max: {noteList[maxNote].noteId}</summary>
+          <input
+            type="range"
+            min="1"
+            max="99"
+            value={maxNote}
+            className="rangeSlider"
+            onChange={(e) => setMaxNote(e.target.value)}
+          />
+        </details>
+      );
+    }
+  };
+
+  useEffect(() => {
+    setNoteList(ToneAsList());
+  }, []);
 
   return (
     <div
@@ -108,7 +149,9 @@ export default function NoteKeyboard() {
         return false;
       }}
     >
-      <h3>Keyboard</h3>
+      <h3 id="KeyboardTitle">Keyboard</h3>
+      {RangeSlider(true)}
+      {RangeSlider(false)}
       {FrequencyOptions()}
     </div>
   );

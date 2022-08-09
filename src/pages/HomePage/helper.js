@@ -13,7 +13,7 @@ export const tone = { //100 Values Total
     B: [30.87, 61.74, 123.47, 246.94, 493.88, 987.77, 1975.53, 3951.07],
   }
 
-export function ToneAsList(){
+export function ToneAsList(min = 0, max = 100){
   let noteLetters = [
     "C",
     "Db",
@@ -29,8 +29,8 @@ export function ToneAsList(){
     "B",
   ];
   let noteList = [];
-  for(let i = 0; i < 100; i++){ //100 is based on total note count
-    noteList.push(tone[noteLetters[i%12]][Math.floor(i/12)])
+  for(let i = min; i < max; i++){ //100 is based on total note count
+    noteList.push({noteId: noteLetters[i%12]+Math.floor(i/12), noteFreq: tone[noteLetters[i%12]][Math.floor(i/12)]})
   }
   console.log(noteList);
   return noteList;

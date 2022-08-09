@@ -8,30 +8,47 @@
     width:85vw;
 }
 
-.GridBtn{
-    user-select: none;
-    width: 8.3vw;
+#KeyboardTitle{
+    display:inherit;
 }
-.GridBtn::selection{
-    user-select: none;
-    color: #000;
-    background: transparent;
+
+.rangeDetails{
+    display: inline;
+    margin-left: 3vw;
+    padding: 0vh 1vw;
+    width: 11vw;
+    height:2vh;
+    border: 2px black solid;
+    border-radius: 50%;
+    color: #33CC33;
 }
-.GridBtn::-moz-selection {
-    user-select: none;
-    color: #000;
-    background: transparent;
+
+.rangeDetails > summary{
+    background-color: transparent;
 }
 
 #NoteContainer{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    width: 84vw;
+    padding: .5vw;
+    flex-wrap: wrap;
 }
 
-span{
-    width: min-content;
-    font-size: smaller;
+.gridBtn{
+    user-select: none;
+    width: 7vw; /*Each row should have 1 octave, 85/12=7*/
+}
+.gridBtn::selection{
+    user-select: none;
+    color: #000;
+    background: transparent;
+}
+.gridBtn::-moz-selection {
+    user-select: none;
+    color: #000;
+    background: transparent;
 }
 
 .sliderContainer{
