@@ -13,18 +13,39 @@
 }
 
 .rangeDetails{
+    margin: 0.5vh 1vw 1vh 0vw;
     display: inline;
-    margin-left: 3vw;
-    padding: 0vh 1vw;
-    width: 11vw;
     height:2vh;
-    border: 2px black solid;
-    border-radius: 50%;
-    color: #33CC33;
 }
 
 .rangeDetails > summary{
-    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+    width: fit-content;
+    padding: 0.25vh 1vw;
+    background-color: inherit;
+    border: 2px black solid;
+    border-radius: 45%;
+    color: #33CC33;
+}
+
+.rangeDetails[open] > summary{
+    border-radius: 45% 45% 0% 0%;
+    border-color: black black #181818 black;
+    z-index: 2;
+}
+
+.rangeDetails > div{
+    position: relative;
+    margin: -2px 0px;
+    cursor: pointer;
+    width:13vw;
+    border: 2px black solid;
+    z-index: 1;
+}
+
+.rangeSlider {
+    width: 11vw;
 }
 
 #NoteContainer{
@@ -38,7 +59,9 @@
 
 .gridBtn{
     user-select: none;
+    cursor: pointer;
     width: 7vw; /*Each row should have 1 octave, 85/12=7*/
+    background-color: #181818;
 }
 .gridBtn::selection{
     user-select: none;
@@ -74,6 +97,8 @@ input[type=range][orient=vertical]{
 
 .textContent{
     color: #33CC33;
+    background-color: #181818;
+
 }
 
 .textSelected{

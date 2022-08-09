@@ -85,6 +85,7 @@ export default function NoteKeyboard() {
       if(noteList.length < 1){
         return(<details className="rangeDetails">
           <summary>Min: </summary>
+          <div>
           <input
             type="range"
             min="0"
@@ -93,11 +94,13 @@ export default function NoteKeyboard() {
             className="rangeSlider"
             onChange={(e) => setMinNote(e.target.value)}
           />
+          </div>
         </details>);
       }
       return (
         <details className="rangeDetails">
           <summary>Min: {noteList[minNote].noteId}</summary>
+          <div>
           <input
             type="range"
             min="0"
@@ -106,12 +109,14 @@ export default function NoteKeyboard() {
             className="rangeSlider"
             onChange={(e) => setMinNote(e.target.value)}
           />
+          </div>
         </details>
       );
     } else {
       if(noteList.length < 1){
         return(<details className="rangeDetails">
           <summary>Max: </summary>
+          <div>
           <input
             type="range"
             min="1"
@@ -120,11 +125,13 @@ export default function NoteKeyboard() {
             className="rangeSlider"
             onChange={(e) => setMaxNote(e.target.value)}
           />
+          </div>
         </details>);
       }
       return (
         <details className="rangeDetails">
           <summary>Max: {noteList[maxNote].noteId}</summary>
+          <div>
           <input
             type="range"
             min="1"
@@ -133,6 +140,7 @@ export default function NoteKeyboard() {
             className="rangeSlider"
             onChange={(e) => setMaxNote(e.target.value)}
           />
+          </div>
         </details>
       );
     }
