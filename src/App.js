@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import Osc1 from "./components/Osc1";
 import Filter from "./components/Filter";
 import NoteKeyboard from "./components/NoteKeyboard";
+import Track from "./components/Track";
 
 function App() {
   const basePath = "/audio-vision/";
@@ -20,6 +21,7 @@ function App() {
         <NoteKeyboard/>
         <Osc1/>
         <Filter/>
+        <Track/>
       </div>
     </div>
   );
