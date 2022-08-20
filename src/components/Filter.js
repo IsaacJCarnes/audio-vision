@@ -19,33 +19,39 @@ const Filter = () => {
       <div className="sliderContainer">
         <div className="param">
           <h3>frequency</h3>
-          <input
-            value={frequency}
-            orient="vertical"
-            type="range"
-            onChange={change}
-            id="frequency"
-            max="10000"
-          />
+          <span className="sliderWithHoriLine">
+            <input
+              value={frequency}
+              type="range"
+              onChange={change}
+              id="frequency"
+              max="10000"
+            />
+          </span>
         </div>
         <div className="param">
           <h3>detune</h3>
-          <input value={detune} orient="vertical" type="range" onChange={change} id="detune" />
+          <span className="sliderWithHoriLine">
+            <input value={detune} type="range" onChange={change} id="detune" />
+          </span>
         </div>
-        <div className="param" style={{display: filterQ.includes(type) ? 'initial' : 'none'}}>
+        <div className="param" style={{display: filterQ.includes(type) ? 'flex' : 'none'}}>
           <h3>Q</h3>
-          <input value={Q} orient="vertical" type="range" onChange={change} id="Q" max="10" />
+          <span className="sliderWithHoriLine">
+            <input value={Q} type="range" onChange={change} id="Q" max="10" />
+          </span>
         </div>
-        <div className="param" style={{display: filterGain.includes(type) ? 'initial' : 'none'}}>
+        <div className="param" style={{display: filterGain.includes(type) ? 'flex' : 'none'}}>
           <h3>gain</h3>
-          <input
-            value={gain}
-            orient="vertical"
-            type="range"
-            onChange={change}
-            id="gain"
-            max="10"
-          />
+          <span className="sliderWithHoriLine">
+            <input
+              value={gain}
+              type="range"
+              onChange={change}
+              id="gain"
+              max="10"
+            />
+          </span>
         </div>
       </div>
       <div className="param">
