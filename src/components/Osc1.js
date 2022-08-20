@@ -34,12 +34,14 @@ const Osc1 = () => {
       </div>
       <div className="param">
         <h3>Detune</h3>
-        <input
-          value={detune}
-          onChange={change}
-          type="range"
-          id="detune"
-        />
+        <span className="sliderWithHoriLine">
+          <input
+            value={detune}
+            onChange={change}
+            type="range"
+            id="detune"
+          />
+        </span>
       </div>
       <div className="param">
         <h3>Wave</h3>

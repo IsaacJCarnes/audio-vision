@@ -148,6 +148,42 @@
     cursor: pointer; /* Cursor on hover */
 }
 
+.sliderWithHoriLine{ /*Attached to span parenting a slider */
+    margin: 7px 0px;
+    width:fit-content;
+    text-align: center;
+    border-bottom: 1px solid black;
+    line-height: 0.1em;
+}
+
+.sliderWithHoriLine input{
+    margin: -7px 0px;
+
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+}
+
+.sliderWithHoriLine input::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    border-radius: 0%;
+    width: 1.5vh; /* Set a specific slider handle width */
+    height: 1.5vh; /* Slider handle height */
+    background: #33CC33; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+  
+.sliderWithHoriLine input::-moz-range-thumb {
+    border-radius: 0%;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #33CC33; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
 input[type=range][orient=vertical]{
     writing-mode: bt-lr; /* IE */
     -webkit-appearance: slider-vertical; /* Chromium */
