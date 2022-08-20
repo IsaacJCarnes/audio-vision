@@ -91,7 +91,7 @@ export default function NoteKeyboard() {
             min="0"
             max="98"
             value={minNote}
-            className="rangeSlider"
+            className="rangeSlider customSlider"
             onChange={(e) => setMinNote(e.target.value)}
           />
           </div>
@@ -106,7 +106,7 @@ export default function NoteKeyboard() {
             min="0"
             max="98"
             value={minNote}
-            className="rangeSlider"
+            className="rangeSlider customSlider"
             onChange={(e) => setMinNote(e.target.value)}
           />
           </div>
@@ -122,7 +122,7 @@ export default function NoteKeyboard() {
             min="1"
             max="99"
             value={maxNote}
-            className="rangeSlider"
+            className="rangeSlider customSlider"
             onChange={(e) => setMaxNote(e.target.value)}
           />
           </div>
@@ -137,7 +137,7 @@ export default function NoteKeyboard() {
             min="1"
             max="99"
             value={maxNote}
-            className="rangeSlider"
+            className="rangeSlider customSlider"
             onChange={(e) => setMaxNote(e.target.value)}
           />
           </div>

@@ -7,7 +7,7 @@ import { tone as toneArray, ToneAsList } from "../pages/HomePage/helper.js";
 
 export default function Track() {
   const [appState, updateState] = useContext(CTX);
-  const [noteList, setNoteList] = useState([]);
+  const [currentNote, setCurrentNote] = useState({ noteId: "", noteFreq: 440 });
   const [trackNotes, setTrackNotes] = useState([]);
 
   const [lengthMultiplier, setLengthMultiplier] = useState(1);
@@ -32,40 +32,49 @@ export default function Track() {
   };
 
   useEffect(() => {
-    setNoteList(ToneAsList());
-  }, []);
+    setCurrentNote(
+      ToneAsList().find(
+        (note) => Math.floor(note.noteFreq) === Math.floor(frequency)
+      )
+    );
+  }, [frequency]);
 
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <h2 className="textContent">Track</h2>
+      <h2 className="textContent">Track</h2>
+      <div id="ButtonHolder">
         <button
+          className="active"
           onClick={(e) => {
             setTrackNotes([
               ...trackNotes,
               {
-                ...noteList.find(
-                  (note) => Math.floor(note.noteFreq) === Math.floor(frequency)
-                ),
+                ...currentNote,
                 noteLength: lengthMultiplier,
               },
             ]);
           }}
         >
-          Add Selected Note To Track
+          Add {currentNote.noteId}
         </button>
         <button
+          disabled={trackNotes.length === 0}
+          className={trackNotes.length > 0 ? "active" : "disabled"}
           onClick={(e) => {
             RemoveLastNote();
           }}
         >
-          Remove Last Note From Track
+          Remove Last Note
         </button>
-      </div>
         <label className="textContent">
           Note Length:
-          <input type="text" value={lengthMultiplier} onChange={(e) => setLengthMultiplier(e.target.value)} />
+          <input
+            type="text"
+            value={lengthMultiplier}
+            onChange={(e) => setLengthMultiplier(e.target.value)}
+          />
         </label>
+      </div>
       <div style={{ display: "flex", flexDirection: "row" }}>{TrackVisual}</div>
     </div>
   );

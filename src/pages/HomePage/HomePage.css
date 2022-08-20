@@ -18,42 +18,71 @@
 .sliderHolder{
     display: flex;
     margin: 0.5vh 0vw;
+    margin-bottom: 3vh;
 }
 
 .rangeDetails{
     margin: 0.5vh 1vw 0vh 0vw;
     display: flex;
+    align-items: center;
+    justify-content: center;
     height:2vh;
+    transition: margin 1s;
 }
 
 .rangeDetails > summary{
     position: relative;
     cursor: pointer;
     width: fit-content;
-    padding: 0.25vh 1vw;
+    padding: 0.25vh 1vw 0.25vh 1vw;
     background-color: inherit;
     border: 2px black solid;
     border-radius: 45%;
     color: #33CC33;
+    z-index: 2;
+    transition: transform 1s;
 }
 
-.rangeDetails[open] > summary{
-    border-radius: 45% 45% 0% 0%;
-    border-color: black black #181818 black;
-    z-index: 2;
+/*.rangeDetails>summary::marker {
+    content: "";
+    display:none;
 }
+
+.rangeDetails>summary::before{
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top:0.45rem;
+    border-width: .4rem;
+    border-style: solid;
+    border-color: transparent transparent transparent #33CC33;
+    transform: rotate(0);
+    transform-origin: .4rem 50%;
+    transition: .25s transform ease;
+}*/
 
 .rangeDetails > div{
     position: relative;
     margin: -2px 0px;
     cursor: pointer;
-    width:13vw;
+    width:fit-content;
+    height: 0vh;
+    transition: height 1;
     border: 2px black solid;
     z-index: 1;
 }
 
 .rangeDetails[open]{
-    margin-bottom: 2.2vh;
+    margin-bottom: 2.5vh;
+}
+
+.rangeDetails[open] > div{
+    height: 2vh;
+}
+
+.rangeDetails[open] > summary{
+    border-radius: 45% 45% 0% 0%;
+    border-color: black black #181818 black;
 }
 
 .rangeSlider {
@@ -92,6 +121,33 @@
     justify-content: center;
 }
 
+.customSlider{
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+}
+
+.customSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    border-radius: 0%;
+    width: 1.5vh; /* Set a specific slider handle width */
+    height: 1.5vh; /* Slider handle height */
+    background: #33CC33; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+  
+.customSlider::-moz-range-thumb {
+    border-radius: 0%;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #33CC33; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
 input[type=range][orient=vertical]{
     writing-mode: bt-lr; /* IE */
     -webkit-appearance: slider-vertical; /* Chromium */
@@ -120,4 +176,8 @@ input[type=range][orient=vertical]{
 .textSelected > span{
     color:black;
     background-color: #33CC33;
+}
+
+.disabled{
+    color: lightslategrey;
 }
