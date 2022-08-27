@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import Header from "./components/Header";
 import Osc1 from "./components/Osc1";
 import Filter from "./components/Filter";
+import ADSR from "./components/ASDR";
 import NoteKeyboard from "./components/NoteKeyboard";
 import Track from "./components/Track";
 
@@ -21,6 +22,7 @@ function App() {
         <NoteKeyboard/>
         <Osc1/>
         <Filter/>
+        <ADSR/>
         <Track/>
       </div>
     </div>

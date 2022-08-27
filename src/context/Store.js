@@ -4,11 +4,10 @@ import Osc from "./Osc";
 let context = new AudioContext();
 let destination = context.destination;
 
-let osc1 = context.createOscillator();
 let gain1 = context.createGain();
+gain1.gain.value = 0.2;
 let filter = context.createBiquadFilter();
 
-osc1.connect(gain1);
 gain1.connect(filter);
 filter.connect(destination);
 
@@ -26,10 +25,9 @@ export function reducer(state, action) {
 
   switch (action.type) {
     case "MAKE_OSC":
-      const newOsc = new Osc(context, state.osc1Settings.type, value, 0, null, gain1);
+      const newOsc = new Osc(context, state.osc1Settings.type, value, state.osc1Settings.detune, state.envelope, gain1);
       nodes.push(newOsc);
       console.log("make osc, note and freq ", innerText, value, id);
-      osc1[id].value = value;
       return { ...state, osc1Settings: { ...state.osc1Settings, [id]: value } };
     case "KILL_OSC":
       let newNodes = [];
@@ -43,29 +41,7 @@ export function reducer(state, action) {
       nodes = newNodes;
       console.log("kill osc, note and freq ", innerText, value);
       return { ...state, osc1Settings: { ...state.osc1Settings, [id]: value } };
-    case "START_OSC":
-      if (firstTime) {
-        osc1.start();
-        firstTime = false;
-      } else {
-        gain1.gain.exponentialRampToValueAtTime(0.8, context.currentTime);
-      }
-      isPlaying = true;
-      return { ...state };
-    case "STOP_OSC":
-      gain1.gain.exponentialRampToValueAtTime(
-        0.0001,
-        context.currentTime + noteTime - 0.04
-      );
-      isPlaying = false;
-      //osc1.stop(context.currentTime + noteTime);
-      return { ...state };
     case "CHANGE_OSC1":
-      if (id === "type") {
-        osc1.type = value;
-      } else {
-        osc1[id].value = value;
-      }
       return { ...state, osc1Settings: { ...state.osc1Settings, [id]: value } };
     case "CHANGE_FILTER":
       if (id === "type") {
@@ -77,6 +53,11 @@ export function reducer(state, action) {
         ...state,
         filterSettings: { ...state.filterSettings, [id]: value },
       };
+    case "CHANGE_ADSR":
+        return {
+          ...state,
+          envelope: { ...state.envelope, [id]: Number(value) },
+        };
     default:
       console.log("reducer error. action: ", action);
       return { ...state };
@@ -86,9 +67,9 @@ export function reducer(state, action) {
 export default function Store(props) {
   const stateHook = React.useReducer(reducer, {
     osc1Settings: {
-      frequency: osc1.frequency.value,
-      detune: osc1.detune.value,
-      type: osc1.type,
+      frequency: 440,
+      detune: 0,
+      type: "sine",
     },
     filterSettings: {
       frequency: filter.frequency.value,
@@ -96,6 +77,12 @@ export default function Store(props) {
       Q: filter.Q.value,
       gain: filter.gain.value,
       type: filter.type,
+    },
+    envelope: {
+      attack: 0.005,
+      decay: 0.1,
+      sustain:0.6,
+      release: 0.1,
     },
   });
   return <CTX.Provider value={stateHook}>{props.children}</CTX.Provider>;

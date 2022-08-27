@@ -26,12 +26,6 @@ const Osc1 = () => {
 
   return (
     <div>
-      <div>
-        <h3>Play</h3>
-        <button id="NoteBtn" onClick={() => updateState({ type: 'START_OSC'})}></button>
-        <h3>Stop</h3>
-        <button id="NoteBtn" onClick={() => updateState({ type: 'STOP_OSC'})}></button>
-      </div>
       <div className="param">
         <h3>Detune</h3>
         <span className="sliderWithHoriLine">
