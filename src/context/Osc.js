@@ -1,5 +1,5 @@
 export default class Osc {
-    constructor(actx, type, frequency, detune, envelope, connection){
+    constructor(actx, type, frequency, detune, envelope, connection, startTime){
         this.actx = actx;
         this.envelope = envelope || {
             attack: 0.005,
@@ -16,22 +16,22 @@ export default class Osc {
         this.osc.connect(this.gateGain);
         this.gateGain.connect(connection);
         this.easing = 0.005;
+        this.startTime = startTime || this.actx.currentTime;
         this.osc.start();
-        this.start();
+        this.start(startTime);
     }
 
-    start(){
-        let {currentTime} = this.actx;
+    start(currentTime = this.actx.currentTime){
+        console.log(currentTime);
         this.gateGain.gain.cancelScheduledValues(currentTime);
         this.gateGain.gain.setValueAtTime(0, currentTime + this.easing);
         this.gateGain.gain.linearRampToValueAtTime(1, currentTime + this.envelope.attack + this.easing);
         this.gateGain.gain.linearRampToValueAtTime(this.envelope.sustain, currentTime + this.envelope.attack + this.envelope.decay + this.easing);
     }
 
-    stop(){
-        let {currentTime} = this.actx;
-        this.gateGain.gain.cancelScheduledValues(currentTime);
-        this.gateGain.gain.setTargetAtTime(0, currentTime, this.envelope.release + this.easing);
+    stop( endTime = this.actx.currentTime){
+        this.gateGain.gain.cancelScheduledValues(endTime);
+        this.gateGain.gain.setTargetAtTime(0, endTime, this.envelope.release + this.easing);
         setTimeout(() => {
             this.osc.disconnect();
         }, 10000);

@@ -21,9 +21,20 @@ const noteTime = 1; // seconds to milliseconds
 let nodes = [];
 
 export function reducer(state, action) {
-  let { id, value, innerText } = action.payload || {};
+  let { id, value, innerText, notes, noteLength } = action.payload || {};
 
   switch (action.type) {
+    case "PLAY_OSC":
+      let startTime =  context.currentTime;
+      let noteLen = noteLength || 0.1;
+     notes.forEach((note) => {
+      let lenMod = note.noteLength || 1;
+      let tempOsc = new Osc(context, state.osc1Settings.type, note.noteFreq, state.osc1Settings.detune, state.envelope, gain1, startTime);
+      tempOsc.stop(startTime + (noteLen*lenMod));
+      startTime += noteLen;
+
+     })
+     return { ...state };
     case "MAKE_OSC":
       const newOsc = new Osc(context, state.osc1Settings.type, value, state.osc1Settings.detune, state.envelope, gain1);
       nodes.push(newOsc);

@@ -31,6 +31,12 @@ export default function Track() {
     setTrackNotes(newTrack);
   };
 
+  const PlayNotes = () => {
+    let noteLength = 0.1;
+    let notes = [...trackNotes];
+    updateState({ type: "PLAY_OSC", payload: { notes, noteLength } });
+  }
+
   useEffect(() => {
     setCurrentNote(
       ToneAsList().find(
@@ -65,6 +71,15 @@ export default function Track() {
           }}
         >
           Remove Last Note
+        </button>
+        <button
+          disabled={trackNotes.length === 0}
+          className={trackNotes.length > 0 ? "active" : "disabled"}
+          onClick={(e) => {
+            PlayNotes();
+          }}
+        >
+          {'>'}
         </button>
         <label className="textContent">
           Note Length:
