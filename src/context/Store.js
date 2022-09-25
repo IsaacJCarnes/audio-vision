@@ -25,13 +25,14 @@ export function reducer(state, action) {
 
   switch (action.type) {
     case "PLAY_OSC":
+      let firstStart = context.currentTime;
       let startTime =  context.currentTime;
       let noteLen = noteLength || 0.1;
      notes.forEach((note) => {
+      let noteStart = startTime + note.startPos * noteLen;
       let lenMod = note.noteLength || 1;
-      let tempOsc = new Osc(context, state.osc1Settings.type, note.noteFreq, state.osc1Settings.detune, state.envelope, gain1, startTime);
-      tempOsc.stop(startTime + (noteLen*lenMod));
-      startTime += noteLen;
+      let tempOsc = new Osc(context, state.osc1Settings.type, note.noteFreq, state.osc1Settings.detune, state.envelope, gain1, noteStart);
+      tempOsc.stop(noteStart + (noteLen*lenMod));
 
      })
      return { ...state };
@@ -51,7 +52,7 @@ export function reducer(state, action) {
       });
       nodes = newNodes;
       console.log("kill osc, note and freq ", innerText, value);
-      return { ...state, osc1Settings: { ...state.osc1Settings, [id]: value } };
+      return { ...state};
     case "CHANGE_OSC1":
       return { ...state, osc1Settings: { ...state.osc1Settings, [id]: value } };
     case "CHANGE_FILTER":
@@ -81,6 +82,7 @@ export default function Store(props) {
       frequency: 440,
       detune: 0,
       type: "sine",
+      bpm: 120,
     },
     filterSettings: {
       frequency: filter.frequency.value,

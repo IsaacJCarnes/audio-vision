@@ -1,5 +1,14 @@
+.trackVisual{
+    position: relative;
+    width: 65vw;
+    height: 20vh;
+    overflow-x: scroll;
+}
+
 .trackNote{
     border: 1px solid #33CC33;
+    color: #33CC33;
+    position: absolute;
 }
 
 #ButtonHolder{

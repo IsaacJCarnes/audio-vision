@@ -22,7 +22,6 @@ export default class Osc {
     }
 
     start(currentTime = this.actx.currentTime){
-        console.log(currentTime);
         this.gateGain.gain.cancelScheduledValues(currentTime);
         this.gateGain.gain.setValueAtTime(0, currentTime + this.easing);
         this.gateGain.gain.linearRampToValueAtTime(1, currentTime + this.envelope.attack + this.easing);

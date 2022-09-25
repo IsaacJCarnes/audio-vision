@@ -23,7 +23,7 @@ export default function NoteKeyboard() {
       let { id, value, innerText } = e.target;
 
       updateState({ type: "MAKE_OSC", payload: { id, value, innerText } });
-    } else if (e.type === "mouseup" || e.type === "touchend") {
+    } else if (e.type === "mouseup" || e.type === "touchend" || e.type === "mouseleave") {
       console.log("mouseup");
       let { id, value, innerText } = e.target;
 

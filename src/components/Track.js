@@ -4,22 +4,24 @@ import React, { useContext, useEffect, useState } from "react";
 import { CTX } from "../context/Store";
 
 import { tone as toneArray, ToneAsList } from "../pages/HomePage/helper.js";
+import { waitForElementToBeRemoved } from "@testing-library/react";
 
 export default function Track() {
   const [appState, updateState] = useContext(CTX);
-  const [currentNote, setCurrentNote] = useState({ noteId: "", noteFreq: 440 });
+  const [currentNote, setCurrentNote] = useState({ noteId: "", noteFreq: 440, startPos: 0});
   const [trackNotes, setTrackNotes] = useState([]);
 
   const [lengthMultiplier, setLengthMultiplier] = useState(1);
+  const [bpm, setBpm] = useState(120);
   const noteWidth = 7; //refers to view width
 
   let { frequency } = appState.osc1Settings;
 
   const TrackVisual = trackNotes.map((element, index) => (
     <div
-      className="trackNote textContent"
+      className="trackNote"
       key={index}
-      style={{ width: element.noteLength * noteWidth + "vw" }}
+      style={{ left: element.startPos * noteWidth + "vw", width: element.noteLength * noteWidth + "vw"}}
     >
       {element.noteId}
     </div>
@@ -32,7 +34,7 @@ export default function Track() {
   };
 
   const PlayNotes = () => {
-    let noteLength = 0.1;
+    let noteLength = 60/bpm;
     let notes = [...trackNotes];
     updateState({ type: "PLAY_OSC", payload: { notes, noteLength } });
   }
@@ -46,17 +48,24 @@ export default function Track() {
   }, [frequency]);
 
   return (
-    <div>
+    <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
       <h2 className="textContent">Track</h2>
       <div id="ButtonHolder">
         <button
           className="active"
           onClick={(e) => {
+            let lastNote = trackNotes[trackNotes.length -1];
+            let startPos = 0;
+            if(lastNote){
+              startPos = Number(lastNote.startPos) + Number(lastNote.noteLength);
+            }
+            console.log(lastNote, startPos);
             setTrackNotes([
               ...trackNotes,
               {
                 ...currentNote,
                 noteLength: lengthMultiplier,
+                startPos: startPos,
               },
             ]);
           }}
@@ -90,7 +99,7 @@ export default function Track() {
           />
         </label>
       </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>{TrackVisual}</div>
+      <div className="trackVisual">{TrackVisual}</div>
     </div>
   );
 }
