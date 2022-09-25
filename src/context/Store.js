@@ -25,15 +25,13 @@ export function reducer(state, action) {
 
   switch (action.type) {
     case "PLAY_OSC":
-      let firstStart = context.currentTime;
       let startTime =  context.currentTime;
-      let noteLen = noteLength || 0.1;
+      let noteLen = noteLength || 0.5;
      notes.forEach((note) => {
-      let noteStart = startTime + note.startPos * noteLen;
+      let noteStart = startTime + (note.startPos + note.blankSpace) * noteLen;
       let lenMod = note.noteLength || 1;
       let tempOsc = new Osc(context, state.osc1Settings.type, note.noteFreq, state.osc1Settings.detune, state.envelope, gain1, noteStart);
       tempOsc.stop(noteStart + (noteLen*lenMod));
-
      })
      return { ...state };
     case "MAKE_OSC":

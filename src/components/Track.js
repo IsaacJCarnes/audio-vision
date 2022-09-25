@@ -8,20 +8,21 @@ import { waitForElementToBeRemoved } from "@testing-library/react";
 
 export default function Track() {
   const [appState, updateState] = useContext(CTX);
-  const [currentNote, setCurrentNote] = useState({ noteId: "", noteFreq: 440, startPos: 0});
+  const [currentNote, setCurrentNote] = useState({ noteId: "", noteFreq: 440, startPos: 0, blankSpace: 0});
   const [trackNotes, setTrackNotes] = useState([]);
 
   const [lengthMultiplier, setLengthMultiplier] = useState(1);
-  const [bpm, setBpm] = useState(120);
+  const [bpm, setBpm] = useState(240);
   const noteWidth = 7; //refers to view width
 
   let { frequency } = appState.osc1Settings;
 
   const TrackVisual = trackNotes.map((element, index) => (
+    console.log(element),
     <div
       className="trackNote"
       key={index}
-      style={{ left: element.startPos * noteWidth + "vw", width: element.noteLength * noteWidth + "vw"}}
+      style={{ left: (element.startPos + element.blankSpace) * noteWidth + "vw", width: element.noteLength * noteWidth + "vw"}}
     >
       {element.noteId}
     </div>
@@ -48,24 +49,25 @@ export default function Track() {
   }, [frequency]);
 
   return (
-    <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+    <div className="track">
       <h2 className="textContent">Track</h2>
-      <div id="ButtonHolder">
+      <div id="LeftButtonHolder">
         <button
           className="active"
           onClick={(e) => {
             let lastNote = trackNotes[trackNotes.length -1];
             let startPos = 0;
             if(lastNote){
-              startPos = Number(lastNote.startPos) + Number(lastNote.noteLength);
+              startPos = Number(lastNote.startPos) + Number(lastNote.blankSpace) + Number(lastNote.noteLength);
             }
             console.log(lastNote, startPos);
             setTrackNotes([
               ...trackNotes,
               {
                 ...currentNote,
-                noteLength: lengthMultiplier,
+                noteLength: Number(lengthMultiplier),
                 startPos: startPos,
+                blankSpace: 0,
               },
             ]);
           }}

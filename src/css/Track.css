@@ -1,8 +1,17 @@
+.track{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70vw;
+}
+
 .trackVisual{
     position: relative;
-    width: 65vw;
+    width: 58vw;
     height: 20vh;
     overflow-x: scroll;
+    clear: both;
 }
 
 .trackNote{
@@ -11,21 +20,29 @@
     position: absolute;
 }
 
-#ButtonHolder{
+#LeftButtonHolder{
+    position: absolute;
+    left: -15%;
+    width: 20%;
+    top: 3vh;
     display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 2vmin 2vmin;
+    padding: 1vmin;
 }
 
 
-#ButtonHolder button{
+#LeftButtonHolder button{
     color: #33CC33;
     border: 2px solid black;
     width: fit-content;
 }
-#ButtonHolder .active{
+#LeftButtonHolder .active{
     background-color: transparent;
 }
 
-#ButtonHolder .disabled{
+#LeftButtonHolder .disabled{
     background-color: inherit;
     opacity: 50%;
 }
