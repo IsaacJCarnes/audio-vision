@@ -38,25 +38,50 @@ export default function Track() {
 
   const MoveTrackNote = (forward) => {
     let notes = [...trackNotes];
-    if(forward){
+    if(forward){ //forward should work
+      if(selectedTrackNote < notes.length-1){ //If not last element in list, switch with last
       let first = notes[selectedTrackNote];
-      let firstStartPos = first.startPos;
       let second = notes[selectedTrackNote + 1];
-      first.startPos = second.startPos + (second.noteLength - first.noteLength);
-      second.startPos = firstStartPos;
-      notes[selectedTrackNote] = second;
-      notes[selectedTrackNote + 1] = first;
-      setSelectedTrackNote(selectedTrackNote+1);
+      console.log(second.startPos+second.blankSpace +second.noteLength, first.startPos+first.blankSpace+first.noteLength+1);
+        if(second.startPos+second.blankSpace >= first.startPos+first.blankSpace+first.noteLength+1){
+          first.blankSpace += 1;
+        } else {
+          let lenDifference = first.noteLength - second.noteLength;
+          let firstStartPos = first.startPos;
+          let firstBlankSpace = first.blankSpace;
+          first.startPos = second.startPos;
+          first.blankSpace = second.blankSpace;
+          second.blankSpace = firstBlankSpace;
+          second.startPos = firstStartPos;
+          notes[selectedTrackNote] = second;
+          notes[selectedTrackNote + 1] = first;
+          setSelectedTrackNote(selectedTrackNote+1);
+        }
+      }
+      else{
+        notes[selectedTrackNote].blankSpace += 1;
+      }
     } else {
-      let first = notes[selectedTrackNote];
-      let firstStartPos = first.startPos;
-      let second = notes[selectedTrackNote - 1];
-      first.startPos = second.startPos;
-      second.startPos = firstStartPos + (first.noteLength - second.noteLength);
-      notes[selectedTrackNote] = second;
-      notes[selectedTrackNote - 1] = first;
-      setSelectedTrackNote(selectedTrackNote-1);
+      if(notes[selectedTrackNote -1]){
+        let first = notes[selectedTrackNote];
+        let firstStartPos = first.startPos;
+        let firstBlankSpace = first.blankSpace;
+        let second = notes[selectedTrackNote - 1];
+        let lenDifference = second.noteLength - first.noteLength + first.blankSpaces - second.blankSpaces;
+        console.log(lenDifference);
+
+        first.startPos = second.startPos;
+        first.blankSpace = second.blankSpace;
+        second.startPos = firstStartPos;
+        second.blankSpace = firstBlankSpace;
+        notes[selectedTrackNote] = second;
+        notes[selectedTrackNote - 1] = first;
+        setSelectedTrackNote(selectedTrackNote-1);
+      } else {
+        notes[selectedTrackNote].blankSpace -= 1;
+      }
     }
+    console.log(notes);
     setTrackNotes(notes);
   }
 
@@ -89,11 +114,12 @@ export default function Track() {
           onClick={(e) => {
             let lastNote = trackNotes[trackNotes.length - 1];
             let startPos = 0;
+            let blankSpaces= 0;
             if (lastNote) {
               startPos =
                 Number(lastNote.startPos) +
-                Number(lastNote.blankSpace) +
-                Number(lastNote.noteLength);
+                1;
+              blankSpaces = Number(lastNote.noteLength) + Number(lastNote.blankSpace) - 1;
             }
             setTrackNotes([
               ...trackNotes,
@@ -101,7 +127,7 @@ export default function Track() {
                 ...currentNote,
                 noteLength: Number(lengthMultiplier),
                 startPos: startPos,
-                blankSpace: 0,
+                blankSpace: blankSpaces,
               },
             ]);
           }}
@@ -137,9 +163,9 @@ export default function Track() {
       </div>
       <div className="ButtonHolder" id="RightButtonHolder">
         <div className={selectedTrackNote !== null ? "active" : "disabled"}>
-          <button className={selectedTrackNote > 0 ? "active" : "disabled"} onClick={(e) => MoveTrackNote(false)}>{"<"}</button>
+          <button onClick={(e) => MoveTrackNote(false)}>{"<"}</button>
           move note
-          <button className={selectedTrackNote < trackNotes.length-1 ? "active" : "disabled"} onClick={(e) => MoveTrackNote(true)}>{">"}</button>
+          <button onClick={(e) => MoveTrackNote(true)}>{">"}</button>
         </div>
       </div>
       <div className="trackVisual" onClick={(e) => {if(e.target.className === "trackNote"){setSelectedTrackNote(Number(e.target.dataset['index']))}}}>{TrackVisual}</div>
