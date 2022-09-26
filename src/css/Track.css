@@ -20,10 +20,8 @@
     position: absolute;
 }
 
-#LeftButtonHolder{
+.ButtonHolder{
     position: absolute;
-    left: -15%;
-    width: 20%;
     top: 3vh;
     display: flex;
     flex-direction: column;
@@ -32,17 +30,45 @@
     padding: 1vmin;
 }
 
+#LeftButtonHolder{
+    left: -16%;
+    width: 20%;
+}
 
-#LeftButtonHolder button{
+#RightButtonHolder{
+    left: 93%;
+    width: 20%;
+}
+
+.ButtonHolder button{
     color: #33CC33;
     border: 2px solid black;
     width: fit-content;
 }
-#LeftButtonHolder .active{
+
+.ButtonHolder div{
+    color: #33CC33;
+    border: 2px solid black;
+    width: fit-content;
+}
+
+.ButtonHolder div button{
+    background: none;
+    color: #33CC33;
+    width: fit-content;
+    border: none;
+}
+
+.ButtonHolder div button .disabled{
+    opacity: 50%;
+    color: grey;
+}
+
+.ButtonHolder .active{
     background-color: transparent;
 }
 
-#LeftButtonHolder .disabled{
+.ButtonHolder .disabled{
     background-color: inherit;
     opacity: 50%;
 }
