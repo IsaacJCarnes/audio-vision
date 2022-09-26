@@ -46,13 +46,17 @@ export default function Track() {
         if(second.startPos+second.blankSpace >= first.startPos+first.blankSpace+first.noteLength+1){
           first.blankSpace += 1;
         } else {
-          let lenDifference = first.noteLength - second.noteLength;
           let firstStartPos = first.startPos;
           let firstBlankSpace = first.blankSpace;
           first.startPos = second.startPos;
-          first.blankSpace = second.blankSpace;
-          second.blankSpace = firstBlankSpace;
           second.startPos = firstStartPos;
+          if(second.noteLength > first.noteLength){
+            first.blankSpace = second.blankSpace + (second.noteLength-first.noteLength);
+            second.blankSpace = firstBlankSpace;
+          } else if (second.noteLength < first.noteLength){
+            first.blankSpace = second.blankSpace - (first.noteLength-second.noteLength);
+            second.blankSpace = firstBlankSpace;
+          }
           notes[selectedTrackNote] = second;
           notes[selectedTrackNote + 1] = first;
           setSelectedTrackNote(selectedTrackNote+1);
