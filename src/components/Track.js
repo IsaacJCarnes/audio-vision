@@ -38,11 +38,10 @@ export default function Track() {
 
   const MoveTrackNote = (forward) => {
     let notes = [...trackNotes];
-    if(forward){ //forward should work
+    if(forward){ //forward works
       if(selectedTrackNote < notes.length-1){ //If not last element in list, switch with last
       let first = notes[selectedTrackNote];
       let second = notes[selectedTrackNote + 1];
-      console.log(second.startPos+second.blankSpace +second.noteLength, first.startPos+first.blankSpace+first.noteLength+1);
         if(second.startPos+second.blankSpace >= first.startPos+first.blankSpace+first.noteLength+1){
           first.blankSpace += 1;
         } else {
@@ -56,6 +55,9 @@ export default function Track() {
           } else if (second.noteLength < first.noteLength){
             first.blankSpace = second.blankSpace - (first.noteLength-second.noteLength);
             second.blankSpace = firstBlankSpace;
+          } else {
+            first.blankSpace = second.blankSpace;
+            second.blankSpace = firstBlankSpace;
           }
           notes[selectedTrackNote] = second;
           notes[selectedTrackNote + 1] = first;
@@ -65,27 +67,37 @@ export default function Track() {
       else{
         notes[selectedTrackNote].blankSpace += 1;
       }
-    } else {
-      if(notes[selectedTrackNote -1]){
+    } else { //Works when same size
+      if(notes[selectedTrackNote].startPos > 0){
         let first = notes[selectedTrackNote];
-        let firstStartPos = first.startPos;
-        let firstBlankSpace = first.blankSpace;
-        let second = notes[selectedTrackNote - 1];
-        let lenDifference = second.noteLength - first.noteLength + first.blankSpaces - second.blankSpaces;
-        console.log(lenDifference);
-
-        first.startPos = second.startPos;
-        first.blankSpace = second.blankSpace;
-        second.startPos = firstStartPos;
-        second.blankSpace = firstBlankSpace;
-        notes[selectedTrackNote] = second;
-        notes[selectedTrackNote - 1] = first;
-        setSelectedTrackNote(selectedTrackNote-1);
+        let second = notes[selectedTrackNote-1];
+        if(second.startPos + second.blankSpace + second.noteLength < first.startPos + first.blankSpace){
+          first.blankSpace-=1;
+        } else {
+          let firstStartPos = first.startPos;
+          let firstBlankSpace = first.blankSpace;
+          first.startPos = second.startPos;
+          second.startPos = firstStartPos;
+          if(second.noteLength > first.noteLength){
+            first.blankSpace = second.blankSpace + (second.noteLength-first.noteLength) - (second.noteLength-first.noteLength);
+            second.blankSpace = firstBlankSpace - (second.noteLength-first.noteLength);
+          } else if (second.noteLength < first.noteLength){
+            first.blankSpace = second.blankSpace;
+            second.blankSpace = firstBlankSpace + (first.noteLength-second.noteLength);
+          } else {
+            first.blankSpace = second.blankSpace;
+            second.blankSpace = firstBlankSpace;
+          }
+          notes[selectedTrackNote] = second;
+          notes[selectedTrackNote - 1] = first;
+          setSelectedTrackNote(selectedTrackNote-1);
+        }
       } else {
-        notes[selectedTrackNote].blankSpace -= 1;
+        if(notes[0].blankSpace > 0){
+          notes[selectedTrackNote].blankSpace -= 1;
+        }
       }
     }
-    console.log(notes);
     setTrackNotes(notes);
   }
 
@@ -118,12 +130,12 @@ export default function Track() {
           onClick={(e) => {
             let lastNote = trackNotes[trackNotes.length - 1];
             let startPos = 0;
-            let blankSpaces= 0;
+            let blankSpace= 0;
             if (lastNote) {
               startPos =
                 Number(lastNote.startPos) +
                 1;
-              blankSpaces = Number(lastNote.noteLength) + Number(lastNote.blankSpace) - 1;
+              blankSpace = Number(lastNote.noteLength) + Number(lastNote.blankSpace) - 1;
             }
             setTrackNotes([
               ...trackNotes,
@@ -131,7 +143,7 @@ export default function Track() {
                 ...currentNote,
                 noteLength: Number(lengthMultiplier),
                 startPos: startPos,
-                blankSpace: blankSpaces,
+                blankSpace: blankSpace,
               },
             ]);
           }}

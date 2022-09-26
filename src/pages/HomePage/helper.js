@@ -32,6 +32,5 @@ export function ToneAsList(min = 0, max = 100){
   for(let i = min; i < max; i++){ //100 is based on total note count
     noteList.push({noteId: noteLetters[i%12]+Math.floor(i/12), noteFreq: tone[noteLetters[i%12]][Math.floor(i/12)]})
   }
-  console.log(noteList);
   return noteList;
 }
