@@ -15,7 +15,7 @@ export default function Track() {
   const [selectedTrackNote, setSelectedTrackNote] = useState(null);
 
   const [lengthMultiplier, setLengthMultiplier] = useState(1);
-  const [bpm, setBpm] = useState(240);
+  const [bpm, setBpm] = useState(80);
   const noteWidth = 7; //refers to view width
 
   let { frequency } = appState.osc1Settings;
@@ -178,6 +178,14 @@ export default function Track() {
         </label>
       </div>
       <div className="ButtonHolder" id="RightButtonHolder">
+          <label className="textContent">
+            BPM:
+            <input
+            type="text"
+            value={bpm}
+            onChange={(e) => setBpm(e.target.value)}
+            />
+          </label>
         <div className={selectedTrackNote !== null ? "active" : "disabled"}>
           <button onClick={(e) => MoveTrackNote(false)}>{"<"}</button>
           move note
