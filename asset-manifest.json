@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/audio-vision/static/css/main.8131576c.css",
+    "main.js": "/audio-vision/static/js/main.41a21958.js",
+    "static/js/787.dcda57d8.chunk.js": "/audio-vision/static/js/787.dcda57d8.chunk.js",
+    "index.html": "/audio-vision/index.html",
+    "main.8131576c.css.map": "/audio-vision/static/css/main.8131576c.css.map",
+    "main.41a21958.js.map": "/audio-vision/static/js/main.41a21958.js.map",
+    "787.dcda57d8.chunk.js.map": "/audio-vision/static/js/787.dcda57d8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8131576c.css",
+    "static/js/main.41a21958.js"
+  ]
+}
